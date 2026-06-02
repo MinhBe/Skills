@@ -1,0 +1,3 @@
+display_name: Research Paper Crawler
+short_description: Find and normalize scholarly paper metadata by region.
+default_prompt: Find scholarly papers for a topic across selected countries or regions, collect legal metadata and open-access links, and export normalized results.

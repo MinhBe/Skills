@@ -1,0 +1,264 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "KnowledgeNode",
+  "description": "Single extractable concept unit in a knowledge-graph.json domain",
+  "type": "object",
+  "required": [
+    "domain",
+    "bloom_target",
+    "depth_level",
+    "parent_concept",
+    "source_content",
+    "learner_state",
+    "contradictions"
+  ],
+  "properties": {
+    "domain": {
+      "type": "string",
+      "description": "Domain folder name under 5. Exhibit/",
+      "examples": ["book", "ai-concept", "mandarin", "math-for-ai", "skill-creator"]
+    },
+    "bloom_target": {
+      "type": "string",
+      "enum": ["remember", "understand", "apply", "analyze", "evaluate"],
+      "description": "Highest Bloom level this concept should reach. Default: apply for youtube/podcast, analyze for book/article."
+    },
+    "depth_level": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4,
+      "description": "Hierarchy depth. 1 = top-level concept. 2 = sub-concept of a branch. 3 = sub-sub-concept."
+    },
+    "parent_concept": {
+      "type": ["string", "null"],
+      "description": "Snake_case key of the parent concept. null if depth_level = 1."
+    },
+    "children": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Snake_case keys of direct children. Empty array if leaf node.",
+      "default": []
+    },
+    "source_content": {
+      "type": "object",
+      "required": [
+        "source_type",
+        "source_name",
+        "source_section",
+        "trust_level",
+        "flags",
+        "argument_flow",
+        "core_question",
+        "extracted",
+        "anchor_story",
+        "falsifiability",
+        "tiers",
+        "misconception_seeds",
+        "transfer_question",
+        "dig_deeper_questions",
+        "next_actions",
+        "open_questions",
+        "last_reextracted"
+      ],
+      "properties": {
+        "source_type": {
+          "type": "string",
+          "enum": ["book", "youtube", "article", "podcast", "other"]
+        },
+        "source_name": {
+          "type": "string",
+          "description": "Human-readable name of the source (e.g. channel name, book title, article title)"
+        },
+        "source_section": {
+          "type": "string",
+          "description": "Where in the source this concept lives. E.g. 'phút 8–12', 'Chapter 3', 'lines 45–82'"
+        },
+        "trust_level": {
+          "type": "string",
+          "enum": ["EXTRACTED", "INFERRED"],
+          "description": "EXTRACTED = literally stated in source. INFERRED = Claude's synthesis from source evidence."
+        },
+        "flags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Metadata tags. E.g. ['PERSONAL EXPERIENCE', 'ANECDOTAL', 'PEER REVIEWED', 'SPECULATIVE']",
+          "default": []
+        },
+        "argument_flow": {
+          "type": "string",
+          "description": "Sequence of rhetorical moves. E.g. 'hook → problem → mechanism → example → application'"
+        },
+        "core_question": {
+          "type": "string",
+          "description": "The single question this concept answers. Used as session entry point."
+        },
+        "extracted": {
+          "type": "string",
+          "description": "Verbatim or close-paraphrase of the concept as stated in source. Must be non-empty."
+        },
+        "inferred": {
+          "type": "string",
+          "description": "Claude's synthesis not directly stated in source. Optional — only if adds value."
+        },
+        "anchor_story": {
+          "type": "string",
+          "description": "Concrete story, case, or example that makes the concept memorable. Not subject to falsifiability check."
+        },
+        "falsifiability": {
+          "type": "string",
+          "description": "What evidence would disprove the main claim, and whether that evidence was found."
+        },
+        "tiers": {
+          "type": "object",
+          "required": ["child", "student", "expert"],
+          "properties": {
+            "child": {
+              "type": "string",
+              "description": "Analogy-first explanation for a 10-year-old. No jargon."
+            },
+            "student": {
+              "type": "string",
+              "description": "Mechanism + context explanation for an educated non-expert."
+            },
+            "expert": {
+              "type": "string",
+              "description": "Trade-offs, edge cases, failure modes for a practitioner."
+            }
+          }
+        },
+        "misconception_seeds": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 2,
+          "description": "Common wrong beliefs about this concept. Minimum 2. Used by Socratic Layer 1."
+        },
+        "transfer_question": {
+          "type": "string",
+          "description": "Scenario-based question requiring application in a new context. Must be non-empty."
+        },
+        "dig_deeper_questions": {
+          "type": "object",
+          "required": ["apply", "analyze", "evaluate", "create"],
+          "properties": {
+            "apply": { "type": "string" },
+            "analyze": { "type": "string" },
+            "evaluate": { "type": "string" },
+            "create": { "type": "string" }
+          }
+        },
+        "next_actions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Concrete experiments or activities to do with this knowledge.",
+          "default": []
+        },
+        "open_questions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "What the source left unresolved or unclear.",
+          "default": []
+        },
+        "last_reextracted": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "ISO date of last extraction. E.g. '2026-05-14'"
+        }
+      }
+    },
+    "relations": {
+      "type": "object",
+      "description": "Concept graph edges. All values are snake_case concept keys.",
+      "properties": {
+        "prerequisites": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Concepts that must be understood before this one.",
+          "default": []
+        },
+        "examples_of": {
+          "type": ["string", "null"],
+          "description": "Parent concept this is an instance of. E.g. 'monastic_model' examples_of 'four_deep_work_models'"
+        },
+        "contrasts_with": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Concepts that highlight this one by contrast.",
+          "default": []
+        },
+        "supports": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Concepts this one provides evidence for.",
+          "default": []
+        },
+        "cross_domain": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Related concepts in other domains. Use 'domain:concept_key' format.",
+          "default": []
+        }
+      },
+      "default": {}
+    },
+    "learner_state": {
+      "type": "object",
+      "required": [
+        "belief_prior",
+        "bloom_level",
+        "mastery_probability",
+        "consecutive_correct",
+        "hint_fails_total",
+        "needs_restructure",
+        "next_review",
+        "personal_misconceptions"
+      ],
+      "description": "Managed exclusively by socratic skill scripts. Do not edit manually.",
+      "properties": {
+        "belief_prior": {
+          "type": ["string", "null"],
+          "description": "Learner's own words on what they think the concept is before any teaching."
+        },
+        "bloom_level": {
+          "type": "string",
+          "enum": ["remember", "understand", "apply", "analyze", "evaluate"],
+          "description": "Current assessed Bloom level."
+        },
+        "mastery_probability": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Running weighted accuracy estimate."
+        },
+        "consecutive_correct": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Correct answers in a row at current bloom level. Resets on wrong answer."
+        },
+        "hint_fails_total": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Lifetime hint failures for this concept."
+        },
+        "needs_restructure": {
+          "type": "boolean",
+          "description": "True when 2 hint fails in a session. Signals Stage 1 re-extraction needed."
+        },
+        "next_review": {
+          "type": ["string", "null"],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "ISO date of next spaced-repetition review. null = not yet studied."
+        },
+        "personal_misconceptions": {
+          "type": "object",
+          "description": "Misconceptions this specific learner has demonstrated. Key = misconception text, value = count."
+        }
+      }
+    },
+    "contradictions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Claims in this node that conflict with other sources or other nodes. Populated during review.",
+      "default": []
+    }
+  }
+}

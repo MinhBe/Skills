@@ -1,0 +1,56 @@
+{
+  "skill_name": "audio-to-markdown",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "chuyen file ghi am nay thanh markdown, sua chinh ta va tom tat",
+      "expected_output": "A structured Markdown document with transcript, cleaned text, summary, and quality notes.",
+      "expectations": [
+        "The workflow runs or consults model-runtime-advisor before choosing local or cloud STT unless the user forced a path.",
+        "The output includes metadata, pipeline configuration, transcript, summary, key points, recommendations, action items, and quality notes.",
+        "The output states missing local dependencies instead of silently failing.",
+        "The output includes quality status and quality metrics."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "tao bien ban hop tu audio, co action items va de xuat",
+      "expected_output": "Meeting-profile Markdown with participants, decisions, action items, recommendations, and risks.",
+      "expectations": [
+        "The profile is meeting or equivalent.",
+        "The output includes action items with owner, timestamp, evidence, and confidence fields.",
+        "The output flags uncertain speaker attribution when diarization is unavailable."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "toi co transcript text san roi, hay bien no thanh ghi chu markdown co tom tat",
+      "expected_output": "Markdown generated from an existing transcript without requiring STT.",
+      "expectations": [
+        "The workflow can use a provided transcript file instead of running STT.",
+        "The transcript cleanup preserves meaning and avoids inventing facts.",
+        "The output includes quality notes and open questions."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "kiem tra Voice 008_sd.md bi lap cau subscribe, dung tao summary neu transcript hong",
+      "expected_output": "A failed quality-gate report rather than polished meeting notes.",
+      "expectations": [
+        "The quality status is failed_stt_quality_gate.",
+        "The output reports suspected STT hallucination or repetition metrics.",
+        "The output does not generate a full summary, key points, recommendations, or action item table."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "sua transcript tieng Viet bi mojibake va tao analysis cho buoi hop voi thay huong dan",
+      "expected_output": "A research_meeting profile Markdown plus optional analysis file.",
+      "expectations": [
+        "The workflow detects common Vietnamese mojibake patterns and records whether repair was applied.",
+        "The research_meeting output includes advisor questions, required revisions, weak points, unanswered questions, next actions, and next meeting checklist.",
+        "Action items include timestamp, evidence sentence, inferred owner where possible, and confidence."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "skill_name": "model-runtime-advisor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "kiem tra may toi chay whisper local duoc khong",
+      "expected_output": "A runtime report that probes the machine and recommends local or cloud STT.",
+      "expectations": [
+        "The output includes CPU, RAM, Python, ffmpeg, GPU or GPU absence, and STT package status.",
+        "The output classifies the machine as local-ready, local-limited, or cloud-recommended.",
+        "The recommendation names an STT path such as faster-whisper, Whisper CPU, or cloud STT."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "may nay co model gi, nen dung STT local hay cloud",
+      "expected_output": "A best-effort cache and dependency inspection with a clear local/cloud recommendation.",
+      "expectations": [
+        "The output checks known Hugging Face, Whisper, Torch, and Ollama cache locations.",
+        "The output does not fail if cache folders are missing.",
+        "The output explains missing dependencies and next steps."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "cho toi biet cau hinh nay co chay local LLM 7B duoc khong",
+      "expected_output": "A hardware-aware local LLM feasibility recommendation.",
+      "expectations": [
+        "The output considers RAM, GPU, VRAM, and CUDA availability.",
+        "The output distinguishes capability estimates from benchmarks.",
+        "The output recommends quantization or cloud fallback when appropriate."
+      ]
+    }
+  ]
+}
