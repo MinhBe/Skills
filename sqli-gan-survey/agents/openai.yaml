@@ -1,0 +1,4 @@
+interface:
+  display_name: "SQLi GAN Survey"
+  short_description: "Survey cloned GAN code for SQLi reproduction"
+  default_prompt: "Survey CTGAN, SeqGAN, TextGAN, and LeakGAN code for input contracts, data pipelines, minimal dataset replacement changes, and smoke-run feasibility on SQLi datasets."

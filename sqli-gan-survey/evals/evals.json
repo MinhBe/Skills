@@ -1,0 +1,38 @@
+{
+  "skill_name": "sqli-gan-survey",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use the sqli-gan-survey skill to survey the SeqGAN clones under D:\\GAN_Final\\Product\\GAN_Methods\\SeqGAN. Report the original input contract, pipeline data forms, and minimal changes needed before using the two SQLi datasets. Do not train.",
+      "expected_output": "A Markdown survey focused on SeqGAN reproduction with input paths, token-id format, pipeline steps, dataset replacement requirements, and smoke-run notes.",
+      "files": [],
+      "expectations": [
+        "The output distinguishes observed code facts from proposed minimal changes.",
+        "The output says whether toy/oracle data is used and where SQLi token-id data would enter.",
+        "The output avoids recommending architecture upgrades or full training."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use the sqli-gan-survey skill to profile the Modified_SQL_Dataset and Kaggle_SQL_Injection_Dataset, then explain how their text/label schema compares with the input requirements of CTGAN, SeqGAN, TextGAN, and LeakGAN. Do not create training adapters.",
+      "expected_output": "A Markdown report with dataset profiling results and a cross-model comparison of input compatibility and needed pre-training transformations.",
+      "files": [],
+      "expectations": [
+        "The output includes read-only dataset profiling notes.",
+        "The output lists intermediate data forms for all four methods.",
+        "The output marks directions 1-7 as survey-first and 8-10 as accepted minimal-change directions."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Use the sqli-gan-survey skill to produce a reproduction survey for CTGAN, SeqGAN, TextGAN, and LeakGAN on a laptop with 20GB RAM and RTX 3050 4GB. Focus on smoke-run feasibility and minimal code changes.",
+      "expected_output": "A reproduction-oriented Markdown survey that covers all four methods, hardware constraints, smoke-run strategy, and what not to change.",
+      "files": [],
+      "expectations": [
+        "The output includes hardware-aware smoke-run recommendations.",
+        "The output identifies hard-coded paths/configs as likely minimal-change targets.",
+        "The output states that full training is not the default next action."
+      ]
+    }
+  ]
+}
