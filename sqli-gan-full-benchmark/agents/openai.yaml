@@ -1,0 +1,4 @@
+interface:
+  display_name: "SQLi GAN Full Benchmark"
+  short_description: "Run full-dataset SQLi GAN clone benchmarks"
+  default_prompt: "Run the retained 18-clone SQLi GAN benchmark on a selected full dataset, then validate generation, metrics, WAF, and timeline artifacts."
